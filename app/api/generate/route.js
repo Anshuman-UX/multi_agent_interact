@@ -1,42 +1,25 @@
-import { Router } from 'express';
-import { callLlama, callLlama8B } from '../services/groqService.js';
-import { callGemini } from '../services/geminiService.js';
-import { evaluateResponses } from '../services/evaluatorService.js';
+import { NextResponse } from 'next/server';
+import { callLlama, callLlama8B } from '../../../lib/groq.js';
+import { callGemini } from '../../../lib/gemini.js';
+import { evaluateResponses } from '../../../lib/evaluator.js';
+import { withTimeout } from '../../../lib/timeout.js';
 
-const router = Router();
-
-// ---------------------------------------------------------------------------
-// Utility: wrap a promise with a timeout
-// ---------------------------------------------------------------------------
-function withTimeout(promise, ms) {
-  let timer;
-  const timeout = new Promise((_, reject) => {
-    timer = setTimeout(
-      () => reject(new Error(`Request timed out after ${ms / 1000}s`)),
-      ms
-    );
-  });
-  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
-}
-
-// ---------------------------------------------------------------------------
-// POST /api/generate
-// ---------------------------------------------------------------------------
-router.post('/generate', async (req, res) => {
+export async function POST(req) {
   try {
-    const { prompt } = req.body;
+    const { prompt } = await req.json();
 
     // ── Validation ──────────────────────────────────────────────────────
     if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
-      return res
-        .status(400)
-        .json({ error: 'Prompt is required and must be a non-empty string.' });
+      return NextResponse.json(
+        { error: 'Prompt is required and must be a non-empty string.' },
+        { status: 400 }
+      );
     }
 
     const trimmedPrompt = prompt.trim();
     const MODEL_TIMEOUT = 15_000; // 15 seconds per model call
 
-    console.log(`\n📨 Incoming prompt: "${trimmedPrompt.slice(0, 80)}…"`);
+    console.log(`\n📨 Incoming prompt (Next.js): "${trimmedPrompt.slice(0, 80)}…"`);
 
     // ── Step 1: Fire all 3 model calls in parallel ──────────────────────
     const [llamaResult, llama8bResult, geminiResult] = await Promise.allSettled([
@@ -89,7 +72,7 @@ router.post('/generate', async (req, res) => {
       try {
         const evaluation = await withTimeout(
           evaluateResponses(trimmedPrompt, successfulResponses),
-          30_000 // evaluator gets 30 s (it processes more text)
+          30_000 // evaluator gets 30 s
         );
         finalAnswer = evaluation.finalAnswer;
         comparisonNotes = evaluation.comparisonNotes;
@@ -106,7 +89,7 @@ router.post('/generate', async (req, res) => {
     }
 
     // ── Step 4: Return structured JSON ──────────────────────────────────
-    res.json({
+    return NextResponse.json({
       prompt: trimmedPrompt,
       responses,
       finalAnswer,
@@ -114,10 +97,9 @@ router.post('/generate', async (req, res) => {
     });
   } catch (error) {
     console.error('Generate endpoint error:', error);
-    res
-      .status(500)
-      .json({ error: 'An unexpected error occurred. Please try again.' });
+    return NextResponse.json(
+      { error: 'An unexpected error occurred. Please try again.' },
+      { status: 500 }
+    );
   }
-});
-
-export default router;
+}

@@ -13,16 +13,16 @@ export default function ResponseCard({ config, text, error, loading, delay = 0 }
         <div className="p-5">
           <div className="flex items-center gap-2.5 mb-5">
             <span className="text-xl">{config.icon}</span>
-            <div>
-              <div className="h-3.5 w-28 rounded-full animate-shimmer" />
-              <div className="h-2.5 w-16 rounded-full animate-shimmer mt-1.5" />
+            <div className="flex-1">
+              <div className="h-3.5 w-28 bg-white/[.04] rounded-full animate-shimmer" />
+              <div className="h-2.5 w-16 bg-white/[.04] rounded-full animate-shimmer mt-1.5" />
             </div>
           </div>
           <div className="space-y-3">
             {[100, 83, 66, 50, 33].map((w, i) => (
               <div
                 key={i}
-                className="h-3 rounded-full animate-shimmer"
+                className="h-3 bg-white/[.04] rounded-full animate-shimmer"
                 style={{ width: `${w}%` }}
               />
             ))}

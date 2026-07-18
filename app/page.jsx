@@ -1,8 +1,10 @@
+'use client';
+
 import { useState } from 'react';
-import PromptInput from './components/PromptInput';
-import ResponseCard from './components/ResponseCard';
-import FinalAnswer from './components/FinalAnswer';
-import ComparisonNotes from './components/ComparisonNotes';
+import PromptInput from '../components/PromptInput';
+import ResponseCard from '../components/ResponseCard';
+import FinalAnswer from '../components/FinalAnswer';
+import ComparisonNotes from '../components/ComparisonNotes';
 
 /* ── Model display config ──────────────────────────────────────────────── */
 const MODELS = [
@@ -29,7 +31,7 @@ const MODELS = [
   },
 ];
 
-export default function App() {
+export default function Home() {
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -44,8 +46,7 @@ export default function App() {
     setResult(null);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      const res = await fetch(`${apiUrl}/api/generate`, {
+      const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: trimmed }),
