@@ -1,6 +1,6 @@
 export default function PromptInput({ prompt, setPrompt, onSubmit, loading }) {
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       onSubmit();
     }
@@ -44,7 +44,7 @@ export default function PromptInput({ prompt, setPrompt, onSubmit, loading }) {
 
           <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/[.04]">
             <span className="text-[11px] text-gray-600 select-none">
-              Ctrl + Enter to submit
+              Enter to submit · Shift + Enter for new line
             </span>
 
             <button
