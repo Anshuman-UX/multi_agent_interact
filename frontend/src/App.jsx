@@ -14,15 +14,15 @@ const MODELS = [
     icon: '🦙',
   },
   {
-    key: 'groqGemma',
-    label: 'Gemma2 9B',
+    key: 'groqLlama8b',
+    label: 'Llama 3.1 8B',
     provider: 'Groq',
     color: '#10b981',
-    icon: '💎',
+    icon: '⚡',
   },
   {
     key: 'gemini',
-    label: 'Gemini 1.5 Flash',
+    label: 'Gemini 2.0 Flash',
     provider: 'Google',
     color: '#3b82f6',
     icon: '✨',
@@ -143,7 +143,7 @@ export default function App() {
         {/* ── Footer ───────────────────────────────────────────────────────── */}
         <footer className="mt-16 pb-8 text-center">
           <p className="text-xs text-gray-600">
-            Powered by Groq (Llama&nbsp;3.3&nbsp;70B&nbsp;+ Gemma2&nbsp;9B) &amp; Google Gemini&nbsp;1.5&nbsp;Flash
+            Powered by Groq (Llama&nbsp;3.3&nbsp;70B&nbsp;+ Llama&nbsp;3.1&nbsp;8B) &amp; Google Gemini&nbsp;2.0&nbsp;Flash
           </p>
         </footer>
       </div>

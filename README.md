@@ -7,8 +7,8 @@ Instead of trusting a single zero-shot response from one model, this application
 ## Models Used
 - **Parallel Generation (3 calls):**
   - Groq Llama 3.3 70B Versatile (`llama-3.3-70b-versatile`)
-  - Groq Gemma2 9B IT (`gemma2-9b-it`)
-  - Google Gemini 1.5 Flash (`gemini-1.5-flash`)
+  - Groq Llama 3.1 8B Instant (`llama-3.1-8b-instant`)
+  - Google Gemini 2.0 Flash (`gemini-2.0-flash`)
 - **Evaluator / Synthesizer (1 call):**
   - Groq Llama 3.3 70B Versatile (`llama-3.3-70b-versatile`)
 

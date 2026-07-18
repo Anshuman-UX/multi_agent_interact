@@ -26,11 +26,11 @@ export async function callLlama(prompt) {
 }
 
 // ---------------------------------------------------------------------------
-// Gemma2 9B IT — efficient instruction-tuned responses
+// Llama 3.1 8B Instant — fast, efficient instruction-tuned responses
 // ---------------------------------------------------------------------------
-export async function callGemma(prompt) {
+export async function callLlama8B(prompt) {
   const response = await groq.chat.completions.create({
-    model: 'gemma2-9b-it',
+    model: 'llama-3.1-8b-instant',
     messages: [
       {
         role: 'system',
@@ -44,6 +44,6 @@ export async function callGemma(prompt) {
   });
 
   const text = response.choices?.[0]?.message?.content;
-  if (!text) throw new Error('Empty response from Gemma model');
+  if (!text) throw new Error('Empty response from Llama 3.1 8B model');
   return text;
 }

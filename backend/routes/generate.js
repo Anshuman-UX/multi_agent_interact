@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { callLlama, callGemma } from '../services/groqService.js';
+import { callLlama, callLlama8B } from '../services/groqService.js';
 import { callGemini } from '../services/geminiService.js';
 import { evaluateResponses } from '../services/evaluatorService.js';
 
@@ -39,9 +39,9 @@ router.post('/generate', async (req, res) => {
     console.log(`\n📨 Incoming prompt: "${trimmedPrompt.slice(0, 80)}…"`);
 
     // ── Step 1: Fire all 3 model calls in parallel ──────────────────────
-    const [llamaResult, gemmaResult, geminiResult] = await Promise.allSettled([
+    const [llamaResult, llama8bResult, geminiResult] = await Promise.allSettled([
       withTimeout(callLlama(trimmedPrompt), MODEL_TIMEOUT),
-      withTimeout(callGemma(trimmedPrompt), MODEL_TIMEOUT),
+      withTimeout(callLlama8B(trimmedPrompt), MODEL_TIMEOUT),
       withTimeout(callGemini(trimmedPrompt), MODEL_TIMEOUT),
     ]);
 
@@ -55,13 +55,13 @@ router.post('/generate', async (req, res) => {
             : null,
         label: 'Llama 3.3 70B (Groq)',
       },
-      groqGemma: {
-        text: gemmaResult.status === 'fulfilled' ? gemmaResult.value : null,
+      groqLlama8b: {
+        text: llama8bResult.status === 'fulfilled' ? llama8bResult.value : null,
         error:
-          gemmaResult.status === 'rejected'
-            ? gemmaResult.reason?.message || 'Unknown error'
+          llama8bResult.status === 'rejected'
+            ? llama8bResult.reason?.message || 'Unknown error'
             : null,
-        label: 'Gemma2 9B (Groq)',
+        label: 'Llama 3.1 8B (Groq)',
       },
       gemini: {
         text: geminiResult.status === 'fulfilled' ? geminiResult.value : null,
@@ -69,7 +69,7 @@ router.post('/generate', async (req, res) => {
           geminiResult.status === 'rejected'
             ? geminiResult.reason?.message || 'Unknown error'
             : null,
-        label: 'Gemini 1.5 Flash',
+        label: 'Gemini 2.0 Flash',
       },
     };
 
