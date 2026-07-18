@@ -22,7 +22,7 @@ const MODELS = [
   },
   {
     key: 'gemini',
-    label: 'Gemini 2.0 Flash',
+    label: 'Gemini 3.1 Flash Lite',
     provider: 'Google',
     color: '#3b82f6',
     icon: '✨',
@@ -143,7 +143,7 @@ export default function App() {
         {/* ── Footer ───────────────────────────────────────────────────────── */}
         <footer className="mt-16 pb-8 text-center">
           <p className="text-xs text-gray-600">
-            Powered by Groq (Llama&nbsp;3.3&nbsp;70B&nbsp;+ Llama&nbsp;3.1&nbsp;8B) &amp; Google Gemini&nbsp;2.0&nbsp;Flash
+            Powered by Groq (Llama&nbsp;3.3&nbsp;70B&nbsp;+ Llama&nbsp;3.1&nbsp;8B) &amp; Google Gemini&nbsp;3.1&nbsp;Flash&nbsp;Lite
           </p>
         </footer>
       </div>

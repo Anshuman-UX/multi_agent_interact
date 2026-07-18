@@ -69,7 +69,7 @@ router.post('/generate', async (req, res) => {
           geminiResult.status === 'rejected'
             ? geminiResult.reason?.message || 'Unknown error'
             : null,
-        label: 'Gemini 2.0 Flash',
+        label: 'Gemini 3.1 Flash Lite',
       },
     };
 
